@@ -15,7 +15,7 @@ salary DECIMAL NOT NULL,
 department_id INT NOT NULL
 );
 
-CREATE TABLE employee(
+CREATE TABLE staff (
 id INT PRIMARY KEY,
 first_name VARCHAR(30) NOT NULL,
 middle_name VARCHAR(30),

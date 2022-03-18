@@ -19,7 +19,7 @@ INSERT INTO role
     ('Software Engineer', 100000, 3),
     ('Accountant', 125000, 4),
 
-    INSERT INTO employee
+    INSERT INTO staff
     (first_name, last_name, role_id, manager_id)
 
     VALUES
