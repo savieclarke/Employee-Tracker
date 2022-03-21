@@ -1,18 +1,26 @@
-import { makeConnection } from "mysql2";
 
-const connection = makeConnection({
+const mysql = require ('mysql2');
+const db = require('.');
+
+ 
+
+const connection = mysql.createConnection({
   host: "localhost",
-  // Your username
   user: "root",
-  // Your password
   password: "",
   database: "staff",
-  connectionLimit: 10,
+  port: "3306"
 
 });
 
-connection.connect(function (err) {
+
+connection.connect(function (err) 
+
+ {console.log(err)
   if (err) throw err;
+  
+  // run the start function after the connection is made to prompt the user
+ 
 });
 
-export default connection;
+module.exports = connection;

@@ -1,47 +1,55 @@
-const { prompt } = require("inquirer");
-//const db = require("../db");
-const console= require("console.table");
+const inquirer  = require("inquirer");
+const db = require("./db");
+require("console.table");
 
+const PROMP_OPTIONS = {
+  VIEW_STAFF: "VIEW_STAFF",
+  ADD_STAFF: "ADD_STAFF",
+  UPDATE_STAFF_ROLE: "UPDATE_STAFF_ROLE",
+  VIEW_ROLES: "VIEW_ROLES",
+  ADD_ROLES: "ADD_ROLES",
+  VIEW_DEPARTMENTS: "VIEW_DEPARTMENTS",
+  ADD_DEPARTMENT: "ADD_DEPARTMENT",
+}
 
 
 function showPrompts() {
-    prompt([
+  inquirer.prompt([
       {
         type: "list",
         name: "choice",
-        message: "What would you like to view?",
+        message: "Main Menu",
         choices: [
           {
             name: "View Staff",
-            value: "VIEW_STAFF"
+            value: PROMP_OPTIONS.VIEW_STAFF
           },
           
-         
           {
             name: "Add Staff",
-            value: "ADD_STAFF"
+            value: PROMP_OPTIONS.ADD_STAFF
           },
           
           {
             name: "Update Staff Role",
-            value: "UPDATE_Staff_ROLE"
+            value: PROMP_OPTIONS.VIEW_STAFF
           },
           
           {
             name: "View All Roles",
-            value: "VIEW_ROLES"
+            value: PROMP_OPTIONS.VIEW_ROLES
           },
           {
             name: "Add Role",
-            value: "ADD_ROLE"
+            value: PROMP_OPTIONS.ADD_ROLES
           },
           {
             name: "View All Departments",
-            value: "VIEW_DEPARTMENTS"
+            value: PROMP_OPTIONS.VIEW_DEPARTMENTS
           },
           {
             name: "Add Department",
-            value: "ADD_DEPARTMENT"
+            value: PROMP_OPTIONS.ADD_DEPARTMENT
           },
           
           
@@ -50,38 +58,38 @@ function showPrompts() {
     ]).then(res => {
       let choice = res.choice;
       switch (choice) {
-        case "VIEW_EMPLOYEES":
-          viewEmployees();
+        case PROMP_OPTIONS.VIEW_STAFF:
+          findAllStaff();
           break;
-        case "ADD_EMPLOYEE":
-          addEmployee();
+        case PROMP_OPTIONS.ADD_STAFF:
+          addStaff();
           break;
-        case "UPDATE_EMPLOYEE_ROLE":
-          updateEmployeeRole();
+        case PROMP_OPTIONS.UPDATE_STAFF_ROLE:
+          updateStaffRole();
           break;
         
-        case "VIEW_DEPARTMENTS":
+        case PROMP_OPTIONS.VIEW_DEPARTMENTS:
           viewDepartments();
           break;
-        case "ADD_DEPARTMENT":
+        case PROMP_OPTIONS.ADD_DEPARTMENT:
           addDepartment();
           break;
-        case "VIEW_ROLES":
+        case PROMP_OPTIONS.VIEW_ROLES:
           viewRoles();
           break;
-        case "ADD_ROLE":
+        case PROMP_OPTIONS.ADD_ROLES:
           addRole();
           break;
         default:
-          quit();
+         exit();
       }
     }
     )
   }
   
   // View staff
-  function viewStaff() {
-    db.displayStaff()
+  function findAllStaff() {
+    return db.findAllStaff()
       .then(([rows]) => {
         let staff = rows;
         console.log("\n");
@@ -99,7 +107,7 @@ function showPrompts() {
           value: id
         }));
   
-        prompt([
+        inquirer.prompt([
           {
             type: "list",
             name: "staffId",
@@ -117,11 +125,11 @@ function showPrompts() {
                   value: id
                 }));
   
-                prompt([
+                inquirer.prompt([
                   {
                     type: "list",
                     name: "roleId",
-                    message: "Which role do you want to assign the selected employee?",
+                    message: "Which role do you want to assign ?",
                     choices: roleOptions
                   }
                 ])
@@ -135,7 +143,7 @@ function showPrompts() {
 
   // View all roles
 function viewRoles() {
-    db.displaylRoles()
+    db.displayRoles()
       .then(([rows]) => {
         let roles = rows;
         console.log("\n");
@@ -154,14 +162,14 @@ function viewRoles() {
           value: id
         }));
   
-        prompt([
+        inquirer.prompt([
           {
             name: "title",
             message: "What is the name of the role?"
           },
           {
             name: "salary",
-            message: "What is the salary of the role?"
+            message: "How much is the salary of the role?"
           },
           {
             type: "list",
@@ -180,7 +188,7 @@ function viewRoles() {
 
   // View all deparments
 function viewDepartments() {
-    db.findAllDepartments()
+    db.displayDepartments()
       .then(([rows]) => {
         let departments = rows;
         console.log("\n");
@@ -191,7 +199,7 @@ function viewDepartments() {
   
   // Add a department
   function addDepartment() {
-    prompt([
+    inquirer.prompt([
       {
         name: "name",
         message: "What is the name of the department?"
@@ -207,7 +215,7 @@ function viewDepartments() {
 
   // Add an employee
 function addStaff() {
-    prompt([
+  inquirer.prompt([
       {
         name: "first_name",
         message: "First name?"
@@ -229,7 +237,7 @@ function addStaff() {
               value: id
             }));
   
-            prompt({
+            inquirer.prompt({
               type: "list",
               name: "roleId",
               message: "What is the employee's role?",
@@ -238,7 +246,7 @@ function addStaff() {
               .then(res => {
                 let roleId = res.roleId;
   
-                db.showStaff()
+                db.findAllStaff()
                   .then(([rows]) => {
                     let employees = rows;
                     const managerChoices = employees.map(({ id, first_name, last_name }) => ({
@@ -248,7 +256,7 @@ function addStaff() {
   
                     managerChoices.unshift({ name: "None", value: null });
   
-                    prompt({
+                    inquirer.prompt({
                       type: "list",
                       name: "managerId",
                       message: "Who is the employee's manager?",
@@ -274,6 +282,9 @@ function addStaff() {
       })
   }
   
+
+  showPrompts();
+
   // Exit the application
   function exit() {
     console.log("See you next time!");

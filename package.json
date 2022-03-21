@@ -1,16 +1,28 @@
 {
   "name": "employee-tracker",
   "version": "1.0.0",
-  "description": "",
+  "description": "AS A business owner I WANT to be able to view and manage the departments, roles, and employees in my company SO THAT I can organize and plan my business ```",
   "main": "index.js",
   "scripts": {
     "start": "node index"
   },
-
-
   "dependencies": {
     "console.table": "^0.10.0",
+    "express": "^4.17.3",
     "inquirer": "^8.2.1",
     "mysql2": "^2.3.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/savieclarke/hw12employeetracker.git"
+  },
+  "keywords": [
+    "hcm"
+  ],
+  "author": "sc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/savieclarke/hw12employeetracker/issues"
+  },
+  "homepage": "https://github.com/savieclarke/hw12employeetracker#readme"
 }

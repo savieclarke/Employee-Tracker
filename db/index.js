@@ -1,27 +1,29 @@
-const connection = require("./connection").default;
+const connection = require("./connection")
 require("console.table");
-
-init();
+const inquirer  = require("inquirer");
 
 class DB {
   constructor(connection) {
     this.connection = connection;
   }
+  //query();
 
-  // Find all employees, join with roles and departments to display their roles, salaries, departments, and managers
-  findAllStaff() {
-    return this.connection.promise().query(
-      "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;"
-    );
+  findAllStaff()  {
+    return this.connection.promise().query (
+      "SELECT employees.id, employees.first_name, employees.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employees LEFT JOIN role on employees.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employees manager on manager.id = employees.manager_id;"
+    )    
+
   }
 
-  // Create a new employee
-  newStaff(staff) {
-    return this.connection.promise().query("INSERT INTO staff SET ?", staff);
+  createEmployee(staff) {
+    return this.connection.promise().query("INSERT INTO employees SET ?", staff);
+  }
+
+  displayRoles() {
+    return this.connection.promise().query("SELECT * FROM role")
   }
   
 
-  // Update the given employee's role
   staffRole(staffId, roleId) {
     return this.connection.promise().query(
       "UPDATE staff SET role_id = ? WHERE id = ?",
@@ -29,38 +31,24 @@ class DB {
     );
   }
 
-
-
-  /*Find all roles, join with departments to display the department name
-  findAllRoles() {
-    return this.connection.promise().query(
-      "SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department on role.department_id = department.id;"
-    );
-  }*/
-
   // Create a new role
   createRole(role) {
     return this.connection.promise().query("INSERT INTO role SET ?", role);
   }
 
- 
-
 
   // Find all departments
-  findAllDepartments() {
+  displayDepartments() {
     return this.connection.promise().query(
       "SELECT department.id, department.name FROM department;"
     );
   }
 
- 
 
   // Create a new department
   newDepartment(department) {
     return this.connection.promise().query("INSERT INTO department SET ?", department);
   }
-
-
   
   
 }
